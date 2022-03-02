@@ -1,0 +1,263 @@
+use zensar_db//create if not found
+db.createCollection('numbers')//to create empty collection
+db.numbers.insertone({number:1,text:'one',type:'odd'})//to create collection with data
+
+db.numbers.insertMany([{number:2,text:'two',type:'even'},{number:3,text:'three',type:'odd'},{number:4,text:'four',type:'even'}])
+db.numbers.insertMany([{number:5,text:'five',type:'odd',prime:true},{number:6,text:'six',type:'even',prime:false,divisible:[2,3,6]}]) this generat id which is not understood by us
+db.numbers.find().pretty()
+db.numbers.drop()
+
+db.collectionName.insertOne({})//inset many
+
+db.person.insertOne({_id:1001,name:'Alise',age:12})//this creat with id which we give
+
+db.person.insertMany([{_id:1001,name:'Bob',age:12},
+{_id:1003,name:'Cat',age:14}
+])
+
+Since id is same will get a error bulkwrite error. since its 2 document if it's one document
+will get write error
+
+db.person.insertOne({id:5,name:'Alise',age:12})//geneated _id automatically
+
+db.person.find().count()//return count
+
+db.person.find({name:'Bob'})//find one
+
+db.person.find({id:5,name:'Alise'})//if more than one alise found find using id
+
+MongoDB Enterprise > db.person.findOne({name:'Alise'})//retive 1st alise stored in collection
+
+db.person.find({age:{$gt:10}})//comparatision values
+
+db.person.find({name:'Alice',id:5,age:{$gt:10}})//componed query
+
+db.person.find({$or:[{name:'Alise'},{age:{$gt:10}}]})//retive document wch is true for any one of the condition
+
+db.person.updateOne({_id:1001},{$set:{sge:16}})//_id to find and $set is to update
+
+db.person.updateMany({name:'Alise'},{$set:{grade:'A'}})//grade column will be add 2 both alise
+
+db.person.updateMany({name:'Alise'},{$set:{total:678}})
+
+db.person.updateMany({name:'Alise'},{$unset:{sge:""}})//delete particular field
+
+db.person.replaceOne({_id:ObjectId("62108dcb024dccd20c5bdd18")},{name:'Dolly',age:35})
+//replace the document 
+
+ db.person.replaceOne({_id:1003},{stuName:'Joe's',age:15})
+
+db.person.deleteOne({stuName:'Joe'})//delete one
+
+db.person.deleteMany({name:'Alise'})//delete all record of name Alise
+--------------------------------------------------------------------------------------------------------------
+db.employee.insertOne(
+{_id:106,name:'Jhon',email:"ashwini@gmail.com"})
+//id can be string also _id:'Zid109'
+
+db.employee.insertMany([
+{_id:102,name:'James',project:['MongoDB','Js','Java'],scores:[50,60,70]
+},{_id:103,name:'Ash',project:['Java','Python'],scores:[55,67]
+},{_id:104,name:'Jan',project:['JS','Cassandra','Spark'],scores:[45,68,79]
+},{_id:105,name:'Irine',project:['MongoDB','DBMS','HTML'],scores:[50,60,70]
+}])
+
+db.employee.find({project:['MongoDB','Hadoop']})//exact match
+db.employee.find({project:'MongoDB'})//who all have MongoDb will will be retrived
+
+db.employee.find({scores:{$gt:26}})
+db.employee.find({scores:{$gt:75,$lt:60}})
+
+db.employee.find({scores:{$elemMatch:{$gt:75,$lt:60}}})
+
+db.employee.find({'scores.2':{$gt:75}})//access through index.. index will start with 0
+
+db.employee.find({'scores.2':70})//finding exact value from position
+
+db.employee.find({project:{$size:3}})//matched every array with exact condition
+
+
+db.employee.updateOne({name:'James'},{$push:{project:"Java"} }//apending at the end of array using $push---$push can add duplicate value
+
+db.employee.updateOne({name:'Ash'},{$push:{project:{$each:["MongoDB","HTML"]}} })//adding more than 1 element in array use $each
+
+db.employee.update({name:'Ash'},{$pop:{project:-1}}) //to remove last element 1 and first element is -1
+
+db.employee.update({name:'Ash'},{$addToSet:{project:"SpringBT"}})//add if not present --no duplicate values will be present
+
+db.employee.find({project:{$all:['MongoDB','Java']}})//seaching for mongoDB and java in there project in any order--order doesn't matter
+
+$exists--  to check a file exits in a document
+db.employee.find({"email":{$exists:true} })
+
+db.employee.find({"email":{$regex:/gmail.com/}})//patten to check--selctor wch match its regular expression
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Embbeded documents
+
+c.insertMany([
+{name:"John",  marks:[{Midterm: "I", total: 489}, {Midterm: "II", total: 475} ]},
+{name: "James",marks:[{Midterm: "I", total: 369 },{Midterm: "II", total: 400},{Midterm: "III", total: 369 }]},
+{name:"Jack",marks:[{Midterm:"II", total: 489 },{ Midterm: "III", total: 390}]}
+])
+
+db.studentmarks.find({'marks.total':{$gt:400}})//querying for field of document inside array//--if any total is 400 it will retive 
+db.studentmarks.find({'marks.0.Midterm':'I'})//check for marks array with 0 index with Midterm:'I' and retivr them
+
+projection
+db.studentmarks.find({name:'Jack'},{'marks.Midterm':1})//retive jack marks along with id
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+projection--- to retive specify field
+db.studentdetails.find( {name:'John'},{marks:1,result:1} )//along with id we will get marks and result
+ db.studentdetails.find( {name:'John'},{_id:1,result:1,grade:1} )//along with id will get result and grade
+
+to supress id becoz we get id in all the field then specify id with 0
+db.studentdetails.find( {name:'John'},{_id:0,result:1,grade:1} )//will retrive result and grade
+
+db.studentdetails.find( {name:'John'},{_id:0} )//will get all the field apart from id... to diplay the field we give 1 and to not so display we give 0
+db.studentdetails.find( {name:'John'},{marks:0} )//display all along with id but no marks will be displayed
+
+db.studentdetails.find( {name:'John'},{marks:0,result:1} )//error "errmsg" : "Cannot do inclusion on field result in exclusion projection"---- either specify 0 or 1 don't give both
+
+ db.studentdetails.find( {name:'John'},{'marks.english':1,'grade.class':1} )///retive english i with grade of class 1
+
+--------------------------------------------------------------------------------------------------
+ db.sample.insertMany([{_id:1,name:null},{_id:2},{_id:3,name:"Ashwini"}])
+
+db.sample.find({name:null})//retive id 1 and 2 (though it has nothing its null)
+
+
+type reference:
+https://docs.mongodb.com/manual/reference/operator/query/type/
+
+db.sample.find({name:{$type:10}})//null is 10--retive only id 1 because it's null execplicitly specified---{ "_id" : 1, "name" : null }
+
+db.sample.find({name:{$exists:false}})//output will be { "_id" : 2 }
+
+db.sample.find({name:{$exists:true}})//ouput will be id 1 and 3
+{ "_id" : 1, "name" : null }
+{ "_id" : 3, "name" : "Ashwini" }
+
+-----------------------------------------------------------------------------------------------------------
+//iterator  a cursor
+
+db.numbers.insert({_id: 1 , number:1})
+db.numbers.insert({_id: 2 , number:2})
+db.numbers.insert({_id: 3, number:3})
+db.numbers.insert({_id: 4 , number:4})
+db.numbers.insert({_id: 5, number:5})
+db.numbers.insert({_id: 6 , number:6})
+db.numbers.insert({_id: 7 , number:7})
+db.numbers.insert({_id: 8, number:8})
+db.numbers.insert({_id: 9 , number:9})
+db.numbers.insert({_id: 10 , number:10})
+db.numbers.insert({_id: 11 , number:11})
+db.numbers.insert({_id: 12 , number:12})
+db.numbers.insert({_id: 13, number:13})
+db.numbers.insert({_id: 14 , number:14})
+db.numbers.insert({_id: 15, number:15})
+db.numbers.insert({_id: 16 , number:16})
+db.numbers.insert({_id: 17 , number:17})
+db.numbers.insert({_id: 18, number:18})
+db.numbers.insert({_id: 19 , number:19})
+db.numbers.insert({_id: 20 , number:20})
+ db.numbers.insert({_id: 21 , number:21})
+db.numbers.insert({_id: 22 , number:22})
+db.numbers.insert({_id: 23, number:23})
+db.numbers.insert({_id: 24 , number:24})
+db.numbers.insert({_id: 25, number:25})
+
+
+db.number.find()-->will dispaly only limited data and specify to "type it for more" 
+
+to control iteration
+var myCursor=db.numbers.find()//assigning find to a variable
+myCursor//dispaly only limited data and specify to "type it for more" after iterating all it will dont diplay anything when you call once
+
+var myCursor=db.numbers.find()
+while(myCursor.hasNext()){
+print (tojson(myCursor.next()));
+}//this will not stop any where it will execute untill it had next
+
+var myCursor=db.numbers.find()
+myCursor.forEach(printjson)//print every element
+
+var myCursor=db.numbers.find()
+myCursor.forEach((x=>print( x.number+10)))//add 10 to all number and display
+
+limit()skip()
+ db.numbers.find().limit(5)//1st 5 retived
+ db.numbers.find().skip(5)//skip last 5
+db.numbers.find().skip(10).limit(5);//skip 1st 5 and last 5 and get from 5 to 9
+-----------------------------------------------------------------------------------------------------------
+
+impoting csv into database
+
+i did't do this part google it
+---------------------------------------------------------------------------------------------------------
+db.publisher.insertOne({
+_id: "Pearson",
+name :"Pearson",
+location:"US",
+founded:1990
+})
+db.publisher.insertOne({
+_id: "Apress",
+name :"Apress",
+location:"US",
+founded:2000
+})
+--------------------------------------
+db.books.insertOne({
+_id: 123456,
+title: "Java Complete Reference",
+author: ["Herbert Schield","Bren"],
+published_Date: ISODate("2005-11-30"),
+pages:650,
+publisher_id: "Pearson" })
+db.books.insertOne(
+db.books.insertOne(
+{
+_id: 223456,
+title: "C# Complete Reference",
+author: ["Herbert Schield"],
+published_Date: ISODate("2011-11-30"),
+pages:750,
+publisher_id: "Pearson" }
+)
+ db.books.insertOne(
+{
+_id: 33456,
+title: "DIve Deep into Docker",
+author: ["Fred Joe"],
+published_Date: ISODate("2018-01-30"),
+pages:350,
+publisher_id: "Apress" }
+)
+
+$lookup-->left outter join
+
+db.publisher.aggregate([ {$lookup:{from:'books',
+localField:'_id',
+foreignField:"publisher_idg",
+as:"booksPublished"
+}}])
+
+
+db.books.aggregate([
+{$group:{_id:}}
+])
+
+
+
+
+
+
+
+
+
+
+
+

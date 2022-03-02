@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.zensar.training.bean.pack6.Course"
+		table="Coursetbl20">
+		<id name="courseId" type="int">
+			<generator class="native"></generator>
+		</id>
+		<property name="courseName"></property>
+		<property name="fee"></property>
+
+		<set name="subjects" cascade="all" table="course20_subject20">
+			<key column="course_id"></key>
+			<many-to-many
+				class="com.zensar.training.bean.pack6.Subject" column="subject_id"
+				unique="true" /><!-- Actually one to many because we are making unique =true -->
+		</set>
+	</class>
+</hibernate-mapping>

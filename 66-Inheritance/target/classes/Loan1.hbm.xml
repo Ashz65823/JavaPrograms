@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+  
+ <hibernate-mapping> 
+	<class name="com.zensar.training.bean.Loan" table="Loan1" discriminator-value="L">
+	<id name="loanId" column="LoanId">
+	<generator class="native"></generator>
+	</id>
+	<discriminator column="TypeOfLoan" type="string"></discriminator>
+	<property name="customerName" column="LoanCustomer"></property>
+	<property name="loanAmt" column="LoanAmt"></property>
+	<property name="loanDate" column="LoanDate"></property>
+	
+	<subclass name="com.zensar.training.bean.HomeLoan" discriminator-value="HL">
+	<property name="homeAddress" column="PropertyAddress"></property>
+	<property name="ownedBy" column="Owned"></property>
+	</subclass>
+	
+	<subclass name="com.zensar.training.bean.CarLoan" discriminator-value="CL">
+	<property name="carDetails" column="CarDetails"></property>
+	<property name="registeredState" column="RegState"></property>
+	</subclass>
+	</class>	
+  
+            
+ </hibernate-mapping>  

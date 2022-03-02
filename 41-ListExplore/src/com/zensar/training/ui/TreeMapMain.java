@@ -1,0 +1,33 @@
+package com.zensar.training.ui;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+public class TreeMapMain {
+
+	public static void main(String[] args) {
+		Map<String, String> map1;
+		map1=new TreeMap<>();
+		map1.put("countryName", "India");
+		String s1="Capital";
+		String s2="Delhi";
+		map1.put(s1, s2);
+		map1.put("President", "Ramnath Govind");
+		System.out.println(map1);
+		map1.put("President", "Modi");//key will not get duplicated so President--Ramnath Govind will be replaced by modi 
+		System.out.println(map1);
+		
+		System.out.println(map1.get("Capital"));
+		Set<String> allkey=map1.keySet();//It will contain all the keys in the map
+		for(String key:allkey)
+		{
+			System.out.println(key+" "+map1.get(key));//get
+		}
+			Collection<String> allValues=map1.values();
+			System.out.println(allValues);
+	}
+/*order in ascending order based on ASCII of key 1st letter*/
+}
