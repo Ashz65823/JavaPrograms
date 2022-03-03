@@ -31,24 +31,24 @@ public class AdvertisementPostController {
 	// 8 Posts new advertise
 	@PostMapping("/advertise/{un}")
 	public NewAdvertisementPostResponse add(@RequestBody NewAdvertisementPostRequest request,
-			@PathVariable(name = "un") String userName) {
+			@PathVariable(name = "un") String userName) {//Receiving path variable
 		AdvertisementPost post = new AdvertisementPost();
 		post.setTitle(request.getTitle());
 		post.setPrice(request.getPrice());
 		post.setDescription(request.getDescription());
 
 		int categoryId = request.getCategoryId();
-		RestTemplate restTemplate = new RestTemplate();
+		RestTemplate restTemplate = new RestTemplate();//to interact between micro service->83 & 84
 		Category category;
-		String url = "http://localhost:9052/advertise/getcategory/" + categoryId;
-		category = restTemplate.getForObject(url, Category.class);
-		post.setCategory(category);
+		String url = "http://localhost:9052/advertise/getcategory/" + categoryId;//point to category service
+		category = restTemplate.getForObject(url, Category.class);//getForObject -->connect with micro service variable
+		post.setCategory(category);//store in post obj
 
 		url = "http://localhost:9051/user/find/" + userName;
 		OlxUser olxUser = restTemplate.getForObject(url, OlxUser.class);
 		post.setOlxUser(olxUser);
 
-		AdvertisementStatus advertisementStatus = new AdvertisementStatus(1, "OPEN");
+		AdvertisementStatus advertisementStatus = new AdvertisementStatus(1, "OPEN");//new request so hard coded
 		post.setAdvertisementStatus(advertisementStatus);
 
 		AdvertisementPost advertisementPost = this.service.addAdvertisement(post);
