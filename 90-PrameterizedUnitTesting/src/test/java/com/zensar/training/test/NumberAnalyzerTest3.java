@@ -36,7 +36,7 @@ public class NumberAnalyzerTest3 {
 		super();
 		this.inputNumber = inputNumber;
 		this.expectedResult = expectedResult;
-	}
+	}//constructor
 	
 	@Before
 	public void f1()

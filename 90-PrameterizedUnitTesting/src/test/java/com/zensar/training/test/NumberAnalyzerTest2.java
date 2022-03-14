@@ -14,7 +14,7 @@ import org.junit.runners.Parameterized;
 
 import com.zensar.training.bean.NumberAnalyzer;
 
-@RunWith(Parameterized.class) // to run for each parameter it recive//---look for function @Parameterized.Parameters (kind of auto iteration)
+@RunWith(Parameterized.class) // to run for each parameter it receive//---look for function @Parameterized.Parameters (kind of auto iteration)
 public class NumberAnalyzerTest2 {
 	private int inputNumber;
 	private boolean expectedResult;
@@ -27,10 +27,10 @@ public class NumberAnalyzerTest2 {
 	}
 
 	@Parameterized.Parameters
-	public static Collection testData()// return collection od data
+	public static Collection testData()// return collection of data
 	{
 		Object[][] data = { // 2d array
-				{ 13, true }, { 17, true }, { 27, false }, { 28, false } };// group of data to test
+				{ 13, true }, { 17, true }, { 27, false }, { 28, false } };// group of data to test-->expected result with values
 		return Arrays.asList(data);
 	}
 

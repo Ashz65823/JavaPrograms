@@ -1,5 +1,6 @@
 package com.zensar.olx.rest;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import com.zensar.olx.bean.AdvertisementPost;
 import com.zensar.olx.bean.AdvertisementStatus;
 import com.zensar.olx.bean.Category;
+import com.zensar.olx.bean.FileterCriteriaRequest;
 import com.zensar.olx.bean.NewAdvertisementPostRequest;
 import com.zensar.olx.bean.NewAdvertisementPostResponse;
 import com.zensar.olx.bean.OlxUser;
@@ -207,8 +209,10 @@ public class AdvertisementPostController {
 
 //----------------------------------------------------------------------------------------------------------------------
 	// 13 Search advertisements based upon given filter criteria
-	@GetMapping("/advertise/search/filtercriteria/{searchAll}")
-	public List<NewAdvertisementPostResponse> searchBasedOnAll(@PathVariable(name="searchAll") String searchText) {
+	@GetMapping("/advertise/search/filtercriteria/")
+	public List<NewAdvertisementPostResponse> searchBasedOnAll(@RequestBody FileterCriteriaRequest criteriaRequest,String searchText ) {
+		LocalDate dateFrom=criteriaRequest.getFromDate();
+		LocalDate toDate=criteriaRequest.getToDate();
 		List<AdvertisementPost> allPost=this.service.getAllAdvertisement();
 		RestTemplate restTemplate=new RestTemplate();
 		for(AdvertisementPost advertisementPost:allPost)
