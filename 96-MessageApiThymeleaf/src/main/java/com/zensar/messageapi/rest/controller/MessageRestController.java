@@ -22,7 +22,9 @@ import com.zensar.messageapi.dto.Message;
 import com.zensar.messageapi.enity.ZensarMessages;
 import com.zensar.messageapi.repository.ZensarMessageRepository;
 
-@RestController
+@RestController//Rest Web service end point
+//this url portion is common for all the method of this class
+//hence it is written in top of class with @RequestMapping
 @RequestMapping("/api/message")//This is used to avoid writing in other mapping
 public class MessageRestController {
 	private List<ZensarMessages> messages;
@@ -46,34 +48,57 @@ public class MessageRestController {
 		 */
 
 	}
-
+	/*
+	 * All the method of rest controller should return data along with appropriate http status code
+	 * To do that method should return object of responceEntity
+	 * ResponceEntity is a class given by spring
+	 * its constructor accept 2 arguments first body(data) second Http status code
+	 * */
+	//Http status code 200
 	@GetMapping
-	public List<ZensarMessages> findAll() {
+	public ResponseEntity<List<ZensarMessages>> findAll() {
 		System.out.println("In findAll of Message rest controller");
 		this.messages=repo.findAll();
-		throw new RuntimeException();
-		//return this.messages;
+		ResponseEntity<List<ZensarMessages>> responseEntity=new ResponseEntity<List<ZensarMessages>>(this.messages,HttpStatus.OK);
+		//throw new RuntimeException();
+		return responseEntity;
 	}
+	/*
+	 * http service with 204*/
 	@DeleteMapping("/{id}")
-	public void deleteMessageById(@PathVariable int id)
+	public ResponseEntity<Void> deleteMessageById(@PathVariable int id)
 	{
+		
+		ResponseEntity<Void> responseEntity=new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		this.repo.deleteById(id);
+		return responseEntity;
 	}
-
+	/*http code 200
+	 * */
 	@PutMapping()
-	public ZensarMessages updateMessage(@RequestBody ZensarMessages msg)
+	public ResponseEntity<ZensarMessages> updateMessage(@RequestBody ZensarMessages msg)
 	{
-		return this.repo.save(msg);
+		ZensarMessages updatemsg=this.repo.save(msg);
+		ResponseEntity<ZensarMessages> responseEntity=new ResponseEntity<>(updatemsg,HttpStatus.ACCEPTED);
+		return responseEntity;
 	}
 	@GetMapping("/{id}")
-	public ZensarMessages findById(@PathVariable int id)
+	public ResponseEntity<ZensarMessages> findById(@PathVariable int id)
 	{
-		return this.repo.findById(id).get();
+		ZensarMessages foundMsg=this.repo.findById(id).get();
+		ResponseEntity<ZensarMessages> responseEntity=new ResponseEntity<ZensarMessages>(foundMsg,HttpStatus.OK);
+		return responseEntity;
 	}
+	/*
+	 * Any method wch create a new resource on server should return http 
+	 * Status with 201
+	 * */
 	@PostMapping()
-	public ZensarMessages createMessage(@RequestBody ZensarMessages msg)
+	public ResponseEntity<ZensarMessages> createMessage(@RequestBody ZensarMessages msg)
 	{
-		return this.repo.save(msg);
+		ZensarMessages createdmsg=this.repo.save(msg);
+		ResponseEntity<ZensarMessages> responseEntity=new ResponseEntity<>(createdmsg,HttpStatus.CREATED);
+		return responseEntity;
 	}
 	
 	//It is recommended to use @ExceptionHandler to handle exception in spring controller

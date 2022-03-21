@@ -209,12 +209,14 @@ public class AdvertisementPostController {
 
 //----------------------------------------------------------------------------------------------------------------------
 	// 13 Search advertisements based upon given filter criteria
-	@GetMapping("/advertise/search/filtercriteria/")
-	public List<NewAdvertisementPostResponse> searchBasedOnAll(@RequestBody FileterCriteriaRequest criteriaRequest,String searchText ) {
+	@GetMapping("/advertise/search/filtercriteria")
+	public List<NewAdvertisementPostResponse> searchBasedOnAll(@RequestBody FileterCriteriaRequest criteriaRequest,String searchText) {
 		LocalDate dateFrom=criteriaRequest.getFromDate();
 		LocalDate toDate=criteriaRequest.getToDate();
 		List<AdvertisementPost> allPost=this.service.getAllAdvertisement();
 		RestTemplate restTemplate=new RestTemplate();
+		//System.out.println(searchText);
+		System.out.println(criteriaRequest);
 		for(AdvertisementPost advertisementPost:allPost)
 		{
 			String url = null;
@@ -264,6 +266,7 @@ public class AdvertisementPostController {
 			postRespone.setStatus(advertisementPost.getAdvertisementStatus().getStatus());
 			responce.add(postRespone);
 		}
+		System.out.println(responce);
 		return responce;
 
 	}

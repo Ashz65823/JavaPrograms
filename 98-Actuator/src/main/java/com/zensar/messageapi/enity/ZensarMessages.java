@@ -4,7 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+
+
 @Entity
+//@ApiModel(value="MessageModel",description = "This represent Message Model object on Angular")
 public class ZensarMessages {
 	
 	@Id

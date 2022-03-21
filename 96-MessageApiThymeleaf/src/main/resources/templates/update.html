@@ -1,0 +1,24 @@
+<!--In Following line we are adding th  namespace so that we can usethymeleaf custom tag in html-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Create new message</title>
+</head>
+<body>
+	<h1>Welcome</h1>
+	<table>
+		<form method="post" th:action="@{/message/add}" th:object=${message}>
+		<tr>
+			<td>ID</td>
+			<td><input type="text" th:field="*{id}" readonly="true"></td>
+		</tr>
+		<tr>
+			<td>Name</td>
+			<td><input type="text" th:field="*{name}"></td>
+		</tr>
+		<tr>
+			<td><input type="Submit" value="Update"></td>
+		</tr>
+		</form>
+	</table>
+</body>
+</html>

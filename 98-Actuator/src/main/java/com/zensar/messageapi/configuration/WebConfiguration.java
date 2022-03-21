@@ -1,4 +1,4 @@
-package com.zensar.messageapi.configuraion;
+package com.zensar.messageapi.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

@@ -1,0 +1,13 @@
+<!--In Following line we are adding th  namespace so that we can usethymeleaf custom tag in html-->
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Create new message</title>
+</head>
+<body>
+	<!--In following line static contents are replaced with content fetch from server-->
+	<form method="post" th:action="@{/message/add}" th:object=${message}>
+		Id<input type="text" th:field="*{id}"><br> Message<input type="text" th:field="*{name}"><br>
+		<input type="submit" value="create new">
+	</form>
+</body>
+</html>

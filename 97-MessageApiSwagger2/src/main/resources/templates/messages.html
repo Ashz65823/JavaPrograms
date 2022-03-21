@@ -1,0 +1,34 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Messages</title>
+</head>
+
+<body>
+<a th:href="@{/message/create}">Click here</a>
+	<table>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Action</th>
+			
+		</tr>
+		<!--Following is loop from thymeleaf
+		${messages}- is a key written in controller
+		${m:id}- Id is a field name of entity class
+		-->
+		<tr th:each="m:${messages}"><!--iterator ==>>m is local variable(m can be named anything)messages is the key written in key-->
+			<td th:text="${m.id}"></td><!--ID and name is the property from entity class-->
+			<td th:text="${m.name}"></td>
+			<!--In Thyleleaf to write url @{} syntax
+			@{/message/delete(id=${m.id})}-
+			here whatever we write in() -is query strinh
+			we are passing id and its value
+			-->
+			<td><a th:href="@{/message/delete(id=${m.id})}">Delete</a></td>
+			<td><a th:href="@{/message/update(id=${m.id})}"> Update</a></td>
+		</tr >
+	</table>
+</body>
+
+</html>
