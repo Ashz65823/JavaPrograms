@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 //To handle exception from all the controller in this class
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class ZensarRestControllerAdvice {
 
 	//Following method acts as Generic exception handler ONLY for this Controller method i.e.,here(MessageRestController)

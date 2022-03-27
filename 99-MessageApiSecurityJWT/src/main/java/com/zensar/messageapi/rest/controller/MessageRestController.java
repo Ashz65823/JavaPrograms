@@ -51,8 +51,8 @@ public class MessageRestController {
 	public List<ZensarMessages> findAll() {
 		System.out.println("In findAll of Message rest controller");
 		this.messages=repo.findAll();
-		throw new RuntimeException();
-		//return this.messages;
+		//throw new RuntimeException();
+		return this.messages;
 	}
 	@DeleteMapping("/{id}")
 	public void deleteMessageById(@PathVariable int id)

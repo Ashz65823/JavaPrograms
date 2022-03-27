@@ -47,6 +47,7 @@ public class MessageController {
 
 	// to delete
 	// @RequestParam is used for fetching request parameters
+	//Internally request.getParameter("id")-->This method is used 
 	@GetMapping("delete")
 	public String deleteById(@RequestParam int id) {
 		// to do delete message from DB using id we have recived

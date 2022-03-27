@@ -3,12 +3,27 @@ package com.zensar.training.ui;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Consumer;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import com.zensar.training.bean.Employee;
 import com.zensar.training.bean.Gender;
 import com.zensar.training.service.EmployeeService;
 import com.zensar.training.service.EmployeeServiceImpl;
 
 public class UIModule {
+	
+	private static DataSource dataSource;
+	private static JdbcTemplate jdbcTemplate;
+	
+	@Qualifier("datasource")
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource=dataSource;
+	}
+	
 	private static void blankLines(int num) {
 		for(int i=1;i<=num; i++)
 			System.out.println();
@@ -31,7 +46,7 @@ public class UIModule {
 		employee.setGender(gender);	
 		EmployeeService employeeService=new EmployeeServiceImpl();
 		try {
-			boolean result=employeeService.addEmployee(employee);
+			boolean result=employeeService.addEmployee(jdbcTemplate, employee);
 			if(result==true)
 				System.out.println("\t\t\tAdded Successfully");
 			else
@@ -49,7 +64,7 @@ public class UIModule {
 		int editableID=prompter.promptForIntInput("Enter ID to Update");
 		
 		try {
-			Employee employee=employeeService.findEmployee(editableID);
+			Employee employee=employeeService.findEmployee(jdbcTemplate, editableID);
 			if(employee==null)
 			{
 				System.out.println("\t\t Not Found....Try Diffrent Id \n----------------------------------------------------------------------------------------------------");
@@ -74,7 +89,7 @@ public class UIModule {
 		employee.setGender(gender);	
 		
 		try {
-			boolean result=employeeService.updateEmployee(employee);
+			boolean result=employeeService.updateEmployee(jdbcTemplate, employee);
 			if(result==true)
 				System.out.println("\t\t\tUpdated Successfully\n------------------------------------------------------------------------------------------\n");
 			else
@@ -101,7 +116,7 @@ public class UIModule {
 		};
 		EmployeeService emService=new EmployeeServiceImpl();
 		try {
-			Employee employee=emService.findEmployee(searchId);
+			Employee employee=emService.findEmployee(jdbcTemplate, searchId);
 			if(employee==null)
 			{
 				System.out.println("\t\t Not Found....Try Diffrent Id");
@@ -130,7 +145,7 @@ public class UIModule {
 		List<Employee> employees=null;
 		EmployeeService empService=new EmployeeServiceImpl();
 		try {
-			employees=empService.findAllEmployee();
+			employees=empService.findAllEmployee(jdbcTemplate);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -145,7 +160,7 @@ public class UIModule {
 		EmployeeService emService=new EmployeeServiceImpl();
 		boolean result=false;
 		try {
-			result = emService.deleteEmployee(new Employee(searchId));
+			result = emService.deleteEmployee(jdbcTemplate, new Employee(searchId));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,13 +57,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	// http status code 403(forbidden) specifies user is authenticated but not
 	// authorized to access this resource
+	
+	//Authentication
+	//access based on roles
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
+		.antMatchers("/api/user/authenticate").permitAll()//This url must be public so that user can login(permitAll is public)
 		.antMatchers(HttpMethod.OPTIONS, "/**")
 		.permitAll().anyRequest()
 		.authenticated().and()
-		.addFilter(new JwtAuthenticationFilter(authenticationManager()));// Ask to enter user name and password using prompt
+		.addFilter(new JwtAuthenticationFilter(authenticationManager()))
+		.sessionManagement()
+		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);// Ask to enter user name and password using prompt
 		// any request should be authenticated and should use httpBasic
 	}
 	@Override

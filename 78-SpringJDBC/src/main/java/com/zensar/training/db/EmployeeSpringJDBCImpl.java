@@ -4,13 +4,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
 import com.zensar.training.bean.Employee;
 import com.zensar.training.bean.Gender;
+import com.zensar.training.bean.JDBCConfigaration;
 
+@Repository
 public class EmployeeSpringJDBCImpl implements EmployeeDAO {
-
+	 DataSource ds=new JDBCConfigaration().dataSource();
+	 private final JdbcTemplate jdbcTemplate=new JdbcTemplate(ds);
+	
 	@Override
 	public boolean addEmployee(JdbcTemplate jdbcTemplate, Employee employee) throws Exception {
 		boolean result = true;
@@ -79,7 +88,7 @@ public class EmployeeSpringJDBCImpl implements EmployeeDAO {
 				employee.setGender(Gender.MALE);
 			else
 				employee.setGender(Gender.FEMALE);
-			return null;
+			return employee;
 		}
 
 	}
