@@ -11,7 +11,8 @@ public class Circle {
 	}
 
 	double getArea() {
-		return radius;
+		double area=3.14*radius*radius;
+		return area;
 	}
 
 }

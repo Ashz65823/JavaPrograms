@@ -11,6 +11,7 @@ public class CircleClient {
 		System.out.println(circle.PI);//not a method / standard
 		circle2.setRadius(7);
 		circle2.PI=5.9;
+		System.out.println("Pi in circle 2="+circle2.PI);
 		circle3.setRadius(10);
 		System.out.println(circle3.PI);
 		System.out.println(Circle.PI);//Standard format

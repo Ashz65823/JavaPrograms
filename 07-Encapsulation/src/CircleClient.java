@@ -5,6 +5,7 @@ public class CircleClient {
 		Circle c1 = new Circle();
 		c1.setRadius(5);
 		System.out.println(c1.getRadius(10));
+		System.out.println(c1.getArea());
 
 		Circle c2 = new Circle();
 		c2.setRadius(7);
